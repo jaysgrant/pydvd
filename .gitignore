@@ -1,0 +1,8 @@
+#VS Code
+.DS_Store
+
+#PyCharm
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+__pycache__
+
