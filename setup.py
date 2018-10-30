@@ -21,28 +21,16 @@ def db_connect():
     return con
 
 
-# table definition
-table_name = 'film_inv'
-id_field = 'film_id'
-id_type = 'integer'
-char_type = 'varchar'
-name_field = 'film_name'
-genre_field = 'film_genre'
-date_field = 'date_added'
-default_val = 'default value'
-
 con = db_connect()
 cur = con.cursor()
-cur.execute('CREATE TABLE {tn} ({cn} {ft} PRIMARY KEY UNIQUE Not NULL)'\
-            .format(tn=table_name, cn=id_field, ft=id_type))
 
 
-cur.execute("ALTER TABLE {tn} ADD COLUMN '{cn}' {ft} Not NULL DEFAULT '{df}'"\
-            .format(tn=table_name, cn=name_field, ft=char_type, df=default_val))
+sql_create_film_inv_table = """ CREATE TABLE IF NOT EXISTS film_inv (
+                                        film_id integer PRIMARY KEY AUTOINCREMENT UNIQUE Not NULL, 
+                                        film_name varchar Not NULL,
+                                        film_genre varchar,
+                                        date_added datetime
+                                    ); """
 
-cur.execute("ALTER TABLE {tn} ADD COLUMN '{cn}' {ft}"\
-            .format(tn=table_name, cn=genre_field, ft=char_type))
-
-cur.execute("ALTER TABLE {tn} ADD COLUMN '{cn}' {ft}"\
-            .format(tn=table_name, cn=date_field, ft='datetime', df=default_val))
+cur.execute(sql_create_film_inv_table)
 
