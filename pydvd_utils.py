@@ -8,10 +8,13 @@ import datetime
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config/config.ini')
 NOW = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+date = NOW
 
+# variables for testing purposes, modify as needed
 name = 'Star Wars'
 genre = 'SciFi'
-date = NOW
+field_name = 'film_genre'
+field_value = genre
 
 
 def get_settings(config_path=CONFIG_PATH):
@@ -33,10 +36,9 @@ def film_insert(name, genre, date):
                   VALUES(?,?,?)''', (name, genre, date))
     print("Record ID " + str(cur.lastrowid) + " created.")
     con.commit()
-    con.close
 
 
-def film_query():
+def query_all():
     con = db_connect()
     cur = con.cursor()
     cur.execute('''SELECT film_id, film_name, film_genre, date_added FROM film_inv''')
@@ -46,6 +48,18 @@ def film_query():
     con.close()
 
 
+def conditional_query(field_name, field_value):
+    con = db_connect()
+    cur = con.cursor()
+    cur.execute('''SELECT film_id, film_name, film_genre, date_added FROM film_inv WHERE '''
+                + field_name + '''=?''', (field_value,))
+    all_rows = cur.fetchall()
+    for row in all_rows:
+        print('{0} : {1}, {2}, {3}'.format(row[0], row[1], row[2], row[3]))
+    con.close()
+
+
+# These function calls will exist in a different file, and are only here for testing purposes
 try:
     film_insert(name, genre, date)
 except sqlite3.Error as e:
@@ -54,7 +68,14 @@ except Exception as e:
     print(e)
 
 try:
-    film_query()
+    query_all()
+except sqlite3.Error as e:
+    print(e)
+except Exception as e:
+    print(e)
+
+try:
+    conditional_query(field_name, field_value)
 except sqlite3.Error as e:
     print(e)
 except Exception as e:
