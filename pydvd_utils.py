@@ -9,8 +9,8 @@ import datetime
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config/config.ini')
 NOW = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-name = ''
-genre = ''
+name = 'Star Wars'
+genre = 'SciFi'
 date = NOW
 
 
@@ -31,7 +31,7 @@ def film_insert(name, genre, date):
     cur = con.cursor()
     cur.execute('''INSERT INTO film_inv(film_name, film_genre, date_added)
                   VALUES(?,?,?)''', (name, genre, date))
-    print(cur.lastrowid)
+    print("Record ID " + str(cur.lastrowid) + " created.")
     con.commit()
     con.close
 
