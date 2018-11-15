@@ -11,10 +11,12 @@ NOW = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 date = NOW
 
 # variables for testing purposes, modify as needed
-name = 'Star Wars'
-genre = 'SciFi'
+name = 'The Muppet Movie'
+genre = 'Family'
 field_name = 'film_genre'
 field_value = genre
+record_id = '1'
+delete_id = '4'
 
 
 def get_settings(config_path=CONFIG_PATH):
@@ -59,6 +61,25 @@ def conditional_query(field_name, field_value):
     con.close()
 
 
+def record_update(field_name, field_value, record_id):
+    con = db_connect()
+    cur = con.cursor()
+    cur.execute('''UPDATE film_inv SET ''' + field_name + '''= ? WHERE film_id = ? ''', (field_value, record_id))
+    cur.execute('''SELECT film_id, film_name, film_genre, date_added FROM film_inv WHERE film_id =? ''', (record_id,))
+    all_rows = cur.fetchall()
+    for row in all_rows:
+        print('{0} : {1}, {2}, {3}'.format(row[0], row[1], row[2], row[3]))
+    con.commit()
+
+
+def record_delete(delete_id):
+    con = db_connect()
+    cur = con.cursor()
+    cur.execute('''DELETE FROM film_inv WHERE film_id = ? ''', delete_id,)
+    con.commit()
+    con.close
+
+
 # These function calls will exist in a different file, and are only here for testing purposes
 try:
     film_insert(name, genre, date)
@@ -76,6 +97,20 @@ except Exception as e:
 
 try:
     conditional_query(field_name, field_value)
+except sqlite3.Error as e:
+    print(e)
+except Exception as e:
+    print(e)
+
+try:
+    record_update(field_name, field_value, record_id)
+except sqlite3.Error as e:
+    print(e)
+except Exception as e:
+    print(e)
+
+try:
+    record_delete(delete_id)
 except sqlite3.Error as e:
     print(e)
 except Exception as e:
