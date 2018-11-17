@@ -4,19 +4,8 @@
 import os
 import sqlite3
 from configparser import ConfigParser
-import datetime
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config/config.ini')
-NOW = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-date = NOW
-
-# variables for testing purposes, modify as needed
-name = 'The Muppet Movie'
-genre = 'Family'
-field_name = 'film_genre'
-field_value = genre
-record_id = '1'
-delete_id = '4'
 
 
 def get_settings(config_path=CONFIG_PATH):
@@ -31,16 +20,18 @@ def db_connect():
     return con
 
 
-def film_insert(name, genre, date):
+def record_insert(table_name, name, genre, date):
     con = db_connect()
     cur = con.cursor()
-    cur.execute('''INSERT INTO film_inv(film_name, film_genre, date_added)
+    cur.execute('''INSERT INTO ''' + table_name + '''(film_name, film_genre, date_added)
                   VALUES(?,?,?)''', (name, genre, date))
     print("Record ID " + str(cur.lastrowid) + " created.")
     con.commit()
+    con.close()
 
 
 def query_all():
+    print('hello')
     con = db_connect()
     cur = con.cursor()
     cur.execute('''SELECT film_id, film_name, film_genre, date_added FROM film_inv''')
@@ -70,6 +61,7 @@ def record_update(field_name, field_value, record_id):
     for row in all_rows:
         print('{0} : {1}, {2}, {3}'.format(row[0], row[1], row[2], row[3]))
     con.commit()
+    con.close()
 
 
 def record_delete(delete_id):
@@ -77,41 +69,5 @@ def record_delete(delete_id):
     cur = con.cursor()
     cur.execute('''DELETE FROM film_inv WHERE film_id = ? ''', delete_id,)
     con.commit()
-    con.close
+    con.close()
 
-
-# These function calls will exist in a different file, and are only here for testing purposes
-try:
-    film_insert(name, genre, date)
-except sqlite3.Error as e:
-    print(e)
-except Exception as e:
-    print(e)
-
-try:
-    query_all()
-except sqlite3.Error as e:
-    print(e)
-except Exception as e:
-    print(e)
-
-try:
-    conditional_query(field_name, field_value)
-except sqlite3.Error as e:
-    print(e)
-except Exception as e:
-    print(e)
-
-try:
-    record_update(field_name, field_value, record_id)
-except sqlite3.Error as e:
-    print(e)
-except Exception as e:
-    print(e)
-
-try:
-    record_delete(delete_id)
-except sqlite3.Error as e:
-    print(e)
-except Exception as e:
-    print(e)
