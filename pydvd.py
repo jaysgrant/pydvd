@@ -4,6 +4,7 @@
 import os
 import setup
 import pydvd_utils
+import npyscreen
 
 
 def check_setup(subdir):

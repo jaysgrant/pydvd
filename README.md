@@ -1,3 +1,6 @@
 # PYDVD
 
-Reference: https://www.pythoncentral.io/introduction-to-sqlite-in-python/
+References:
+
+https://www.pythoncentral.io/introduction-to-sqlite-in-python/
+https://npyscreen.readthedocs.io/introduction.html
