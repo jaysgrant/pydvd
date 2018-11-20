@@ -31,9 +31,11 @@ def record_insert(table_name, name, genre, date):
 
 
 def query_all():
-    print('hello')
     con = db_connect()
     cur = con.cursor()
+    print('\n')
+    # todo The line below should return the column names, but currently does not work.
+    # cur.execute('PRAGMA table_info(film_inv)')
     cur.execute('''SELECT film_id, film_name, film_genre, date_added FROM film_inv''')
     all_rows = cur.fetchall()
     for row in all_rows:
