@@ -15,6 +15,7 @@ The following components for your choice of OS are required to get and run PyDVD
 
 * Git
 * Python 3
+* Optional - SQLiteStudio. This tool provides a great UI for working with and developing your database.
 
 Development was done primarily with Python 3.7.1 on Windows 10, but this application should run on any other OS with a modern install of Python 3.
 
