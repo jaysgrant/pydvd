@@ -4,6 +4,8 @@
 import os
 import sqlite3
 from configparser import ConfigParser
+import csv
+import fileinput
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config/config.ini')
 
@@ -71,5 +73,18 @@ def record_delete(delete_id):
     cur = con.cursor()
     cur.execute('''DELETE FROM film_inv WHERE film_id = ? ''', delete_id,)
     con.commit()
+    con.close()
+
+
+def csv_export():
+    con = db_connect()
+    cur = con.cursor()
+    cur.execute('''SELECT film_id, film_name, film_genre, date_added FROM film_inv''')
+    all_rows = cur.fetchall()
+    with open('output.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(['Film ID', 'Film Name', 'Film Genre', 'Date Added'])
+        writer.writerows(all_rows)
+        f.close()
     con.close()
 

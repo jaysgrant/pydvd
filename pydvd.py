@@ -27,10 +27,11 @@ def main_menu():
     print('3. Search the database based on movie title or genre.')
     print('4. Update a movie in the database.')
     print('5. Delete a movie from the database.')
-    print('6. Exit PyDVD.')
+    print('6. Export table to CSV.')
+    print('X. Exit PyDVD.')
 
     while "the answer is invalid":
-        reply = str(input('Select your desired action (1-6): ')).lower().strip()
+        reply = str(input('Select your desired action (1-5, or x to exit): ')).lower().strip()
         if reply[:1] == '1':
             insert_record()
             main()
@@ -47,6 +48,9 @@ def main_menu():
             delete_record()
             main()
         if reply[:1] == '6':
+            csv_export()
+            main()
+        if reply[:1] == 'x':
             program_exit()
 
 
@@ -158,6 +162,15 @@ def conditional_query():
 def query_all():
     try:
         pydvd_utils.query_all()
+    except sqlite3.Error as e:
+        print(e)
+    except Exception as e:
+        print(e)
+
+
+def csv_export():
+    try:
+        pydvd_utils.csv_export()
     except sqlite3.Error as e:
         print(e)
     except Exception as e:
