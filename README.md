@@ -3,7 +3,7 @@
 PyDVD is an application that was developed purely to progress skills in the usage of SQLite3 
 as a database engine used with Python 3.
 
-##### Version: 0.1.0
+##### Version: 0.1.1
 
 ## Getting Started
 
