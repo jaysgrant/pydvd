@@ -77,14 +77,28 @@ def record_delete(delete_id):
 
 
 def csv_export():
+    filename = 'output.csv'
     con = db_connect()
     cur = con.cursor()
     cur.execute('''SELECT film_id, film_name, film_genre, date_added FROM film_inv''')
     all_rows = cur.fetchall()
-    with open('output.csv', 'w') as f:
+    with open(filename, 'w') as f:
         writer = csv.writer(f)
         writer.writerow(['Film ID', 'Film Name', 'Film Genre', 'Date Added'])
         writer.writerows(all_rows)
         f.close()
     con.close()
+    remove_empty_lines(filename)
+
+
+def remove_empty_lines(filename):
+    if not os.path.isfile(filename):
+        print("{} does not exist ".format(filename))
+        return
+    with open(filename) as filehandle:
+        lines = filehandle.readlines()
+
+    with open(filename, 'w') as filehandle:
+        lines = filter(lambda x: x.strip(), lines)
+        filehandle.writelines(lines)
 
