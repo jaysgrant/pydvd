@@ -5,7 +5,6 @@ import os
 import sqlite3
 from configparser import ConfigParser
 import csv
-import fileinput
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config/config.ini')
 
@@ -36,8 +35,6 @@ def query_all():
     con = db_connect()
     cur = con.cursor()
     print('\n')
-    # todo The line below should return the column names, but currently does not work.
-    # cur.execute('PRAGMA table_info(film_inv)')
     cur.execute('''SELECT film_id, film_name, film_genre, date_added FROM film_inv''')
     all_rows = cur.fetchall()
     for row in all_rows:
@@ -109,8 +106,11 @@ def get_column_names():
     cur = con.cursor()
     cur.execute("PRAGMA table_info(film_inv)")
     data_extract = cur.fetchall()
+    print(data_extract)
     for column in data_extract:
         column_names.append(column[1])
+        column_names = [s.replace('_', ' ') for s in column_names]
+        column_names = [s.title() for s in column_names]
     return column_names
 
 
