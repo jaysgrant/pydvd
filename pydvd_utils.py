@@ -84,7 +84,8 @@ def csv_export():
     all_rows = cur.fetchall()
     with open(filename, 'w') as f:
         writer = csv.writer(f)
-        writer.writerow(['Film ID', 'Film Name', 'Film Genre', 'Date Added'])
+        columns = get_column_names()
+        writer.writerow(columns)
         writer.writerows(all_rows)
         f.close()
     con.close()
@@ -97,8 +98,19 @@ def remove_empty_lines(filename):
         return
     with open(filename) as filehandle:
         lines = filehandle.readlines()
-
     with open(filename, 'w') as filehandle:
         lines = filter(lambda x: x.strip(), lines)
         filehandle.writelines(lines)
+
+
+def get_column_names():
+    column_names = []
+    con = db_connect()
+    cur = con.cursor()
+    cur.execute("PRAGMA table_info(film_inv)")
+    data_extract = cur.fetchall()
+    for column in data_extract:
+        column_names.append(column[1])
+    return column_names
+
 
