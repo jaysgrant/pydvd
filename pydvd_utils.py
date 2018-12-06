@@ -112,5 +112,3 @@ def get_column_names():
         column_names = [s.replace('_', ' ') for s in column_names]
         column_names = [s.title() for s in column_names]
     return column_names
-
-

@@ -31,7 +31,7 @@ def main_menu():
     print('X. Exit PyDVD.')
 
     while "the answer is invalid":
-        reply = str(input('Select your desired action (1-5, or x to exit): ')).lower().strip()
+        reply = str(input('Select your desired action (1-6, or x to exit): ')).lower().strip()
         if reply[:1] == '1':
             insert_record()
             main()
