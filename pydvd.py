@@ -39,7 +39,7 @@ def main_menu():
             query_all()
             main()
         if reply[:1] == '3':
-            conditional_query()
+            film_query()
             main()
         if reply[:1] == '4':
             record_update()
@@ -120,20 +120,30 @@ def yes_no(question):
 
 
 def insert_record():
-    name = str(input('Name of movie: '))
-    genre = str(input('Genre of movie: '))
-    date = NOW
-    table_name = 'film_inv'
-
     try:
-        pydvd_utils.record_insert(table_name, name, genre, date)
+        name = str(input('Name of movie: '))
+        date = NOW
+        film_table = 'film_inv'
+        genre_table = 'genre_names'
+        print('Select the ID of the genre for your movie form the list below.')
+        all_rows = pydvd_utils.cond_query_all(genre_table)
+        for row in all_rows:
+            print(row)
+        while True:
+            try:
+                genre = int(input('Genre of movie: '))
+                break
+            except:
+                print("Please enter a numerical value.")
+        genre_name = str(pydvd_utils.get_genre_name(genre))
+        pydvd_utils.record_insert(film_table, name, genre_name, date)
     except sqlite3.Error as e:
         print(e)
     except Exception as e:
         print(e)
 
 
-def conditional_query():
+def film_query():
     question = 'Field to search, either name or genre,'
     while "the answer is invalid":
         question_answer = str(input(question + ' (n/g): ')).lower().strip()
@@ -141,7 +151,7 @@ def conditional_query():
             field_name = 'film_name'
             field_value = str(input('Film name to search for: '))
             try:
-                pydvd_utils.conditional_query(field_name, field_value)
+                pydvd_utils.film_query(field_name, field_value)
                 main()
             except sqlite3.Error as e:
                 print(e)
@@ -151,7 +161,7 @@ def conditional_query():
             field_name = 'film_genre'
             field_value = str(input('Genre to search for: '))
             try:
-                pydvd_utils.conditional_query(field_name, field_value)
+                pydvd_utils.film_query(field_name, field_value)
                 main()
             except sqlite3.Error as e:
                 print(e)
