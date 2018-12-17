@@ -31,6 +31,14 @@ def record_insert(table_name, name, genre, date):
     con.close()
 
 
+def cond_query_all(table_name):
+    con = db_connect()
+    cur = con.cursor()
+    cur.execute('''SELECT * from ''' + table_name)
+    all_rows = cur.fetchall()
+    return all_rows
+
+
 def query_all():
     con = db_connect()
     cur = con.cursor()
@@ -42,7 +50,7 @@ def query_all():
     con.close()
 
 
-def conditional_query(field_name, field_value):
+def film_query(field_name, field_value):
     con = db_connect()
     cur = con.cursor()
     cur.execute('''SELECT film_id, film_name, film_genre, date_added FROM film_inv WHERE '''
@@ -112,3 +120,12 @@ def get_column_names():
         column_names = [s.replace('_', ' ') for s in column_names]
         column_names = [s.title() for s in column_names]
     return column_names
+
+
+def get_genre_name(record_id):
+    con = db_connect()
+    cur = con.cursor()
+    cur.execute('''SELECT genre_name FROM genre_names WHERE genre_id =? ''', (record_id,))
+    genre_name = cur.fetchone()
+    genre_name = ''.join(genre_name)
+    return genre_name
