@@ -116,7 +116,6 @@ def get_column_names():
     cur = con.cursor()
     cur.execute("PRAGMA table_info(film_inv)")
     data_extract = cur.fetchall()
-    # print(data_extract)
     for column in data_extract:
         column_names.append(column[1])
         column_names = [s.replace('_', ' ') for s in column_names]
