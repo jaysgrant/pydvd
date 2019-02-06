@@ -5,7 +5,6 @@ import os
 import sqlite3
 from configparser import ConfigParser
 import csv
-import fileinput
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config/config.ini')
 
@@ -32,12 +31,18 @@ def record_insert(table_name, name, genre, date):
     con.close()
 
 
+def cond_query_all(table_name):
+    con = db_connect()
+    cur = con.cursor()
+    cur.execute('''SELECT * from ''' + table_name)
+    all_rows = cur.fetchall()
+    return all_rows
+
+
 def query_all():
     con = db_connect()
     cur = con.cursor()
     print('\n')
-    # todo The line below should return the column names, but currently does not work.
-    # cur.execute('PRAGMA table_info(film_inv)')
     cur.execute('''SELECT film_id, film_name, film_genre, date_added FROM film_inv''')
     all_rows = cur.fetchall()
     for row in all_rows:
@@ -45,7 +50,7 @@ def query_all():
     con.close()
 
 
-def conditional_query(field_name, field_value):
+def film_query(field_name, field_value):
     con = db_connect()
     cur = con.cursor()
     cur.execute('''SELECT film_id, film_name, film_genre, date_added FROM film_inv WHERE '''
@@ -84,11 +89,14 @@ def csv_export():
     all_rows = cur.fetchall()
     with open(filename, 'w') as f:
         writer = csv.writer(f)
-        writer.writerow(['Film ID', 'Film Name', 'Film Genre', 'Date Added'])
+        columns = get_column_names()
+        writer.writerow(columns)
         writer.writerows(all_rows)
         f.close()
     con.close()
     remove_empty_lines(filename)
+    csv_path = os.path.dirname(os.path.abspath(filename))
+    print('File saved to', csv_path)
 
 
 def remove_empty_lines(filename):
@@ -97,8 +105,28 @@ def remove_empty_lines(filename):
         return
     with open(filename) as filehandle:
         lines = filehandle.readlines()
-
     with open(filename, 'w') as filehandle:
         lines = filter(lambda x: x.strip(), lines)
         filehandle.writelines(lines)
 
+
+def get_column_names():
+    column_names = []
+    con = db_connect()
+    cur = con.cursor()
+    cur.execute("PRAGMA table_info(film_inv)")
+    data_extract = cur.fetchall()
+    for column in data_extract:
+        column_names.append(column[1])
+        column_names = [s.replace('_', ' ') for s in column_names]
+        column_names = [s.title() for s in column_names]
+    return column_names
+
+
+def get_genre_name(record_id):
+    con = db_connect()
+    cur = con.cursor()
+    cur.execute('''SELECT genre_name FROM genre_names WHERE genre_id =? ''', (record_id,))
+    genre_name = cur.fetchone()
+    genre_name = ''.join(genre_name)
+    return genre_name

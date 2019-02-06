@@ -25,7 +25,7 @@ def db_connect():
     return con
 
 
-def main():
+def db_setup():
     try:
         subdir = os.path.join(os.path.dirname(__file__), 'data')
         create_dir(subdir)
@@ -36,13 +36,28 @@ def main():
         con = db_connect()
         cur = con.cursor()
         sql_create_film_inv_table = (" CREATE TABLE IF NOT EXISTS film_inv (\n"
-                                 "film_id integer PRIMARY KEY AUTOINCREMENT UNIQUE Not NULL, \n"
-                                 "film_name varchar Not NULL,\n"
-                                 "film_genre varchar,\n"
-                                 "date_added datetime\n"
-                                 "); ")
+                                     "film_id integer PRIMARY KEY AUTOINCREMENT UNIQUE Not NULL, \n"
+                                     "film_name varchar Not NULL,\n"
+                                     "film_genre varchar,\n"
+                                     "date_added datetime\n"
+                                     "); ")
         cur.execute(sql_create_film_inv_table)
         con.commit()
+
+        sql_create_genre_table = (" CREATE TABLE IF NOT EXISTS genre_names (\n"
+                                  "genre_id integer PRIMARY KEY AUTOINCREMENT UNIQUE Not NULL, \n"
+                                  "genre_name varchar Not NULL\n"
+                                  "); ")
+        cur.execute(sql_create_genre_table)
+        con.commit()
+
+        genres = (
+            "Action", "Documentary", "Animated", "Drama", "Biography", "Family", "Comedy", "Fantasy", "Crime", "Horror",
+            "Musical", "Romance", "Romantic Comedy", "Science Fiction", "Thriller", "War", "Western", "Sports",)
+        for genre in genres:
+            cur.execute("INSERT INTO genre_names(genre_name) VALUES(?)", [genre])
+        con.commit()
+
     except sqlite3.Error as e:
         print(e)
     except Exception as e:
@@ -52,6 +67,9 @@ def main():
             con.close()
 
 
+def main():
+    db_setup()
+
+
 if __name__ == "__main__":
     main()
-
