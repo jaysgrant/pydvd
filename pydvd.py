@@ -100,7 +100,7 @@ def record_update():
                 print(e)
         if question_answer[:1] == 'g':
             field_name = 'film_genre'
-            field_value = str(input('New film genre: '))
+            field_value = get_genre_name()
             try:
                 pydvd_utils.record_update(field_name, field_value, record_id)
                 main()
@@ -124,18 +124,7 @@ def insert_record():
         name = str(input('Name of movie: '))
         date = NOW
         film_table = 'film_inv'
-        genre_table = 'genre_names'
-        print('Select the ID of the genre for your movie form the list below.')
-        all_rows = pydvd_utils.cond_query_all(genre_table)
-        for row in all_rows:
-            print(row)
-        while True:
-            try:
-                genre = int(input('Genre of movie: '))
-                break
-            except:
-                print("Please enter a numerical value.")
-        genre_name = str(pydvd_utils.get_genre_name(genre))
+        genre_name = get_genre_name()
         pydvd_utils.record_insert(film_table, name, genre_name, date)
     except sqlite3.Error as e:
         print(e)
@@ -159,7 +148,7 @@ def film_query():
                 print(e)
         if question_answer[:1] == 'g':
             field_name = 'film_genre'
-            field_value = str(input('Genre to search for: '))
+            field_value = get_genre_name()
             try:
                 pydvd_utils.film_query(field_name, field_value)
                 main()
@@ -185,6 +174,22 @@ def csv_export():
         print(e)
     except Exception as e:
         print(e)
+
+
+def get_genre_name():
+    genre_table = 'genre_names'
+    print('Select the ID of the genre for your movie form the list below.')
+    all_rows = pydvd_utils.cond_query_all(genre_table)
+    for row in all_rows:
+        print(row)
+    while True:
+        try:
+            genre = int(input('Genre of movie: '))
+            break
+        except:
+            print("Please enter a numerical value.")
+    genre_name = str(pydvd_utils.get_genre_name(genre))
+    return genre_name
 
 
 def main():
