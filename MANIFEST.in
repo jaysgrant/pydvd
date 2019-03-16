@@ -1,0 +1,3 @@
+include pydvd/config/config.ini
+include READMME.md
+include LICENSE.txt
