@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-import setup
+import db_init
 import pydvd_utils
 import datetime
 import sqlite3
@@ -15,7 +15,7 @@ def check_setup(subdir):
     if not os.path.exists(subdir):
         print('Setup appears to not have been run, this will be done first. \n')
         try:
-            setup.main()
+            db_init.main()
             print('Setup completed. An empty database has been created. \n')
         except Exception as e:
             print(e)
