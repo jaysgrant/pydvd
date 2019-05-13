@@ -7,7 +7,7 @@ pipeline {
         stage("Run PyLint") {
             steps {
                 script {
-                    sh 'pylint pydvd/*.py'
+                    sh 'pylint --rcfile=pylint.cfg $(find . -maxdepth 2 -name "*.py" -print) MYMODULE/ > pylint.log || exit 0'
                 }
             }
         }
