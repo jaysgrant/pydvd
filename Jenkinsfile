@@ -7,9 +7,7 @@ pipeline {
         stage("Run PyLint") {
             steps {
                 script {
-                    sh 'ls'
-                    sh 'cd pydvd'
-                    sh 'pylint *.py'
+                    sh 'pylint pydvd/*.py'
                 }
             }
         }
