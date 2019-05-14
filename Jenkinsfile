@@ -7,7 +7,7 @@ pipeline {
         stage("Run PyLint") {
             steps {
                 script {
-                    sh 'pylint pydvd/*.py --disable=W1202 --output-format=parseable --reports=no > pylint.log || echo "pylint exited with $?"'
+                    sh 'pylint --rcfile=pylint.cfg pydvd/*.py --disable=W1202 --output-format=parseable --reports=no > pylint.log || echo "pylint exited with $?"'
                     sh 'cat pylint.log'
                 }
             }
