@@ -94,20 +94,20 @@ def record_update():
             try:
                 pydvd_utils.record_update(field_name, field_value, record_id)
                 main()
-            except sqlite3.Error as e:
-                print(e)
-            except Exception as e:
-                print(e)
+            except sqlite3.Error as E:
+                print(E)
+            except Exception as E:
+                print(E)
         if question_answer[:1] == 'g':
             field_name = 'film_genre'
             field_value = get_genre_name()
             try:
                 pydvd_utils.record_update(field_name, field_value, record_id)
                 main()
-            except sqlite3.Error as e:
-                print(e)
-            except Exception as e:
-                print(e)
+            except sqlite3.Error as E:
+                print(E)
+            except Exception as E:
+                print(E)
 
 
 def yes_no(question):
@@ -126,10 +126,10 @@ def insert_record():
         film_table = 'film_inv'
         genre_name = get_genre_name()
         pydvd_utils.record_insert(film_table, name, genre_name, date)
-    except sqlite3.Error as e:
-        print(e)
-    except Exception as e:
-        print(e)
+    except sqlite3.Error as E:
+        print(E)
+    except Exception as E:
+        print(E)
 
 
 def film_query():
@@ -142,38 +142,38 @@ def film_query():
             try:
                 pydvd_utils.film_query(field_name, field_value)
                 main()
-            except sqlite3.Error as e:
-                print(e)
-            except Exception as e:
-                print(e)
+            except sqlite3.Error as E:
+                print(E)
+            except Exception as E:
+                print(E)
         if question_answer[:1] == 'g':
             field_name = 'film_genre'
             field_value = get_genre_name()
             try:
                 pydvd_utils.film_query(field_name, field_value)
                 main()
-            except sqlite3.Error as e:
-                print(e)
-            except Exception as e:
-                print(e)
+            except sqlite3.Error as E:
+                print(E)
+            except Exception as E:
+                print(E)
 
 
 def query_all():
     try:
         pydvd_utils.query_all()
-    except sqlite3.Error as e:
-        print(e)
-    except Exception as e:
-        print(e)
+    except sqlite3.Error as E:
+        print(E)
+    except Exception as E:
+        print(E)
 
 
 def csv_export():
     try:
         pydvd_utils.csv_export()
-    except sqlite3.Error as e:
-        print(e)
-    except Exception as e:
-        print(e)
+    except sqlite3.Error as E:
+        print(E)
+    except Exception as E:
+        print(E)
 
 
 def get_genre_name():
