@@ -15,8 +15,7 @@ pipeline {
 
     post {
         always {
-            pylint testResults: 'pylint.log'
-            recordIssues enabledForFailure: true, tools: [pylint()]
+            recordIssues enabledForFailure: true, tool: pyLint()
             cleanWs()
         }
     }
