@@ -1,6 +1,9 @@
 pipeline {
 
-    agent { label 'docker-python-worker'}
+    agent { docker {
+        label 'docker-python-worker'
+        }
+    }
 
     stages {
 
