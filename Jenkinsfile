@@ -16,7 +16,11 @@ pipeline {
 
     post {
         always {
-            recordIssues enabledForFailure: true, tool: pyLint()
+            recordIssues(
+                    tool: pyLint(pattern: 'pylint.log'),
+                    unstableTotalAll: 20,
+                    failedTotalAll: 30
+                )
             cleanWs()
         }
     }
